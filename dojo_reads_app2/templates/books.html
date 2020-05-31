@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <header>
+      <h1>Welcome, {{name}}!</h1>
+      <a href="/addbook">Add Book and Review</a><br />
+      <a href="/logout">Log Out</a>
+    </header>
+    <br />
+    <hr />
+    <br />
+    <h2>Recent Book Reviews:</h2>
+    <br />
+    {% for review in reviews reversed%}
+    <h3><a href="/books/{{review.book.id}}">{{review.book.title}}</a></h3>
+    <p>Rating: {{review.rating}}</p>
+    <p>
+      <a href="/users/{{review.user.id}}">{{review.user.fullname}}</a> says:
+      {{review.content}}
+    </p>
+    <p>Posted on {{review.created_at}}</p>
+    <hr />
+
+    {% endfor %}
+    <br />
+    <h2>Other Books with Reviews:</h2>
+    <div style="overflow: scroll; width: 200px; height: 200px;">
+      {% for book in books %}
+      <a href="/books/{{book.id}}">{{book.title}}</a>
+      <br />
+      {% endfor %}
+    </div>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Book and Review</title>
+  </head>
+  <body>
+    <h1>{{book.title}}</h1>
+    <h2>Author: {{author}}</h2>
+    <a href="/books">Home</a><br />
+    <a href="/logout">Log Out</a>
+    <br />
+    <h2>Reviews:</h2>
+    <hr />
+    {% for review in book.reviews.all %}
+    <p>Rating: {{review.rating}}</p>
+    <p>
+      <a href="/users/{{review.user.id}}">{{review.user.fullname}}</a> says:
+      {{review.content}}
+    </p>
+    <p>{{review.created_at}}</p>
+    {% if review.user.email == request.session.log_email %}
+    <a href="/delete/{{review.id}}">Delete this Review</a>
+    {% endif %}
+    <hr />
+    <br />
+    {% endfor %}
+    <form action="/addreview" method="POST">
+      {% csrf_token %}
+      <label for="addreview">Add a Review:</label> <br />
+      <textarea name="addreview" cols="30" rows="10"></textarea><br />
+      <label for="addrating">Rating:</label>
+      <select name="addrating">
+        <option value="" disabled selected hidden>How Many Stars?</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+      <input type="hidden" name="book_id" value="{{book.id}}" /> <br />
+      <button>Submit Review</button>
+    </form>
+  </body>
+</html>
